@@ -1,0 +1,15 @@
+<resources>
+
+    <string name="action_example"> Contoh Aksi </string>
+
+    <string name="action_settings">Pengaturan</string>
+    <string name="action_change_units">Perubahan Unit </string>
+    <string name="symbol_search">Pencarian Simbol</string>
+    <string name="content_test">Cari simbol saham </string>
+    <string name="input_prefill"></string>
+    <string name="network_toast"> Uh-oh! Aplikasi ini membutuhkan koneksi Internet </string>
+    <string name="add_stock_symbol"> Tambahkan Simbol Saham</string>
+    <string name="graph"> Grafik Saham</string>
+    <string name="internet">Tidak terhubung dengan koneksi internet</string>
+
+</resources>
