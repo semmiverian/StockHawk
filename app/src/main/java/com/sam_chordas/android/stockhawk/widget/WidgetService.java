@@ -2,6 +2,7 @@ package com.sam_chordas.android.stockhawk.widget;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Binder;
 import android.os.Build;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -16,23 +17,21 @@ import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 public class WidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-//        return new WidgetDataProvider(this,intent);
         return new RemoteViewsFactory() {
             private Cursor data;
 
             @Override
             public void onCreate() {
-
+                final long identityToken = Binder.clearCallingIdentity();
+                data = getQuery();
+                Binder.restoreCallingIdentity(identityToken);
             }
 
             @Override
             public void onDataSetChanged() {
-                data = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
-                        new String[]{QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.BIDPRICE,
-                                QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE, QuoteColumns.ISUP},
-                        QuoteColumns.ISCURRENT + " = ?",
-                        new String[]{"1"},
-                        null);
+                final long identityToken = Binder.clearCallingIdentity();
+                data = getQuery();
+                Binder.restoreCallingIdentity(identityToken);
             }
 
             @Override
@@ -52,9 +51,13 @@ public class WidgetService extends RemoteViewsService {
             @Override
             public RemoteViews getViewAt(int i) {
                 data.moveToPosition(i);
-                RemoteViews views = new RemoteViews(getPackageName(), R.layout.list_item_quote);
+                RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_list_item_quote);
                 views.setTextViewText(R.id.stock_symbol,data.getString(data.getColumnIndex("symbol")));
                 views.setTextViewText(R.id.bid_price,data.getString(data.getColumnIndex("bid_price")));
+
+                Intent symbolGraphIntent = new Intent();
+                symbolGraphIntent.putExtra("symbol",data.getString(data.getColumnIndex("symbol")));
+                views.setOnClickFillInIntent(R.id.stock_info,symbolGraphIntent);
                 return views;
             }
 
@@ -78,5 +81,15 @@ public class WidgetService extends RemoteViewsService {
                 return true;
             }
         };
+    }
+
+    private Cursor getQuery() {
+        return getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
+                new String[]{QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.BIDPRICE,
+                        QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE, QuoteColumns.ISUP},
+                QuoteColumns.ISCURRENT + " = ?",
+                new String[]{"1"},
+                null);
+
     }
 }

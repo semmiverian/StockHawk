@@ -4,7 +4,7 @@
     android:background="#09C"
     android:padding="@dimen/widget_margin">
 
-    <android.support.v7.widget.RecyclerView
+    <ListView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
