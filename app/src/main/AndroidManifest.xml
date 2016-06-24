@@ -31,7 +31,11 @@
         <activity
             android:name=".ui.StockGraphActivity"
             android:label="@string/graph"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme" >
+            <intent-filter>
+                <action android:name="com.sam_chordas.android.stockhawk.widget.graph"/>
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".service.StockTaskService"
@@ -59,8 +63,12 @@
                 android:resource="@xml/stock_widget_info" />
         </receiver>
 
-        <service android:name=".widget.WidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+        <service
+            android:name=".widget.WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <service
+            android:name=".MyIntentService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

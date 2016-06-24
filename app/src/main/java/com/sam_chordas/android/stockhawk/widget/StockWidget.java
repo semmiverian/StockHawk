@@ -16,7 +16,7 @@ import com.sam_chordas.android.stockhawk.ui.StockGraphActivity;
  * Implementation of App Widget functionality.
  */
 public class StockWidget extends AppWidgetProvider {
-    public static final String INTENT_ACTION = "com.sam_chordas.android.stockhawk.widget.INTENT_ACTION";
+    public static final String INTENT_ACTION = "com.sam_chordas.android.stockhawk.widget.graph";
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -34,12 +34,26 @@ public class StockWidget extends AppWidgetProvider {
 //        Intent graphIntent = new Intent(context,StockGraphActivity.class);
 //        PendingIntent pendingIntent = PendingIntent.getActivity(context,0,graphIntent,0);
 //        views.setOnClickPendingIntent(R.id.recycler_view,pendingIntent);
+//        Intent intent = new Intent(context,StockWidget.class);
+//        intent.setAction(INTENT_ACTION);
+//        views.setOnClickPendingIntent(R.id.recycler_view, PendingIntent.getBroadcast(context, 0, intent, 0));
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
 
     }
 
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+        if(INTENT_ACTION.equals(intent.getAction())){
+            Intent graphIntent = new Intent(context,StockWidget.class);
+            graphIntent.putExtra("symbol",intent.getStringExtra("symbol"));
+            graphIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(graphIntent);
+
+        }
+    }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {

@@ -54,10 +54,10 @@ public class WidgetService extends RemoteViewsService {
                 RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_list_item_quote);
                 views.setTextViewText(R.id.stock_symbol,data.getString(data.getColumnIndex("symbol")));
                 views.setTextViewText(R.id.bid_price,data.getString(data.getColumnIndex("bid_price")));
-
-                Intent symbolGraphIntent = new Intent();
-                symbolGraphIntent.putExtra("symbol",data.getString(data.getColumnIndex("symbol")));
-                views.setOnClickFillInIntent(R.id.stock_info,symbolGraphIntent);
+//
+                Intent graphIntent = new Intent();
+                graphIntent.putExtra("symbol",data.getString(data.getColumnIndex("symbol")));
+                views.setOnClickFillInIntent(R.id.stock_info,graphIntent);
                 return views;
             }
 
